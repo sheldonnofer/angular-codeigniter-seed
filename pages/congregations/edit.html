@@ -1,0 +1,159 @@
+<h1 class="page-header">{{page.title}}</h1>
+<div class="col-sm-8 col-sm-offset-2" ng-controller="editCongregationController">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Details</div>
+        <div class="panel-body">
+            <form name="myForm" class="form-horizontal">
+
+                <div class="col-md-5 pull-left">
+                    <h1><small>Information</small></h1>
+                    <div class="control-group" ng-class="{error: myForm.name.$invalid}">
+                        <div class="form-group">
+                            <label class="control-label" for="name">Name</label>
+                            <input class="input-xlarge form-control" type="text" name="name" id="name" ng-model="congregations.name" required>
+                            <span ng-show="myForm.name.$error.required" class="help-inline">Required</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.address.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="address">Address</label>
+                            <input class="input-xlarge form-control" type="text" name="address" id="address" ng-model="congregations.address" required>
+                            <span ng-show="myForm.address.$error.required" class="help-inline">Required</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.city.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="city">City</label>
+                            <input class="input-xlarge form-control" type="text" name="city" id="city" ng-model="congregations.city" required>
+                            <span ng-show="myForm.city.$error.required" class="help-inline">Required</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.state.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="state">State</label>
+                            <input class="input-xlarge form-control" type="text" name="state" id="state" ng-model="congregations.state" required>
+                            <span ng-show="myForm.state.$error.required" class="help-inline">Required</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.meeting_day.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="meeting_day">Meeting Day</label>
+                            <input class="input-xlarge form-control" type="text" name="meeting_day" id="meeting_day" ng-model="congregations.meeting_day" required>
+                            <span ng-show="myForm.meeting_day.$error.required" class="help-inline">Required</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.site.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="site">Meeting Time</label>
+                            <input class="input-xlarge form-control" type="text" name="meeting_time" id="meeting_time" ng-model="congregations.meeting_time" required>
+                            <span ng-show="myForm.meeting_time.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.circuit.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="circuit">Circuit</label>
+                            <input class="input-xlarge form-control" name="circuit" id="circuit" ng-model="congregations.circuit">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 pull-right">
+                    <h1><small>Contact</small></h1>
+
+                    <div class="control-group" ng-class="{error: myForm.site.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="talk_coordinator">Talk Coordinator</label>
+                            <input class="input-xlarge form-control" type="text" name="talk_coordinator" id="talk_coordinator" ng-model="congregations.talk_coordinator" required>
+                            <span ng-show="myForm.talk_coordinator.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.coordinator_phone.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="coordinator_phone">Coordinator Phone</label>
+                            <input class="input-xlarge form-control" type="text" name="coordinator_phone" id="coordinator_phone" ng-model="congregations.coordinator_phone" required>
+                            <span ng-show="myForm.coordinator_phone.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.coordinator_email.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="coordinator_email">Coordinator Email</label>
+                            <input class="input-xlarge form-control" type="text" name="coordinator_email" id="coordinator_email" ng-model="congregations.coordinator_email" required>
+                            <span ng-show="myForm.coordinator_email.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.cobe.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="cobe">COBE</label>
+                            <input class="input-xlarge form-control" type="text" name="cobe" id="cobe" ng-model="congregations.cobe" required>
+                            <span ng-show="myForm.cobe.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.cobe_phone.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="cobe_phone">COBE Phone</label>
+                            <input class="input-xlarge form-control" type="text" name="cobe_phone" id="cobe_phone" ng-model="congregations.cobe_phone" required>
+                            <span ng-show="myForm.cobe_phone.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+                    <div class="control-group" ng-class="{error: myForm.cobe_email.$invalid}">
+
+                        <div class="form-group">
+                            <label class="control-label" for="cobe_email">COBE Email</label>
+                            <input class="input-xlarge form-control" type="text" name="cobe_email" id="cobe_email" ng-model="congregations.cobe_email" required>
+                            <span ng-show="myForm.cobe_email.$error.required" class="help-inline">Required</span>
+                            <!--<span ng-show="myForm.site.$error.url" class="help-inline">Not a URL</span>-->
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+            </form>
+        </div>
+
+        <div class="form-actions panel-footer">
+            <!--<div class="panel panel-heading">-->
+            <button ng-click="save()" ng-disabled="isClean() || myForm.$invalid" class="btn btn-primary"><i class="icon-ok icon-white"></i> Save</button>
+            <a href="#/congregations" class="btn btn-link">Cancel</a>
+            <button ng-click="destroy()" ng-show="congregations.id" class="btn btn-danger pull-right"><i class="icon-trash icon-white"></i> Delete</button>
+            <!--</div>-->
+        </div>
+
+    </div>
+
+
+</div>

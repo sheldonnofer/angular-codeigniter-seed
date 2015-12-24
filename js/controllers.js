@@ -58,9 +58,9 @@ controllers.controller('navigation', ['$scope', '$location', 'user', function($s
 
     $scope.navigation = function() {
         if ($scope.active('/administrator') && user.loggedIn()) {
-            return 'partials/navigation-administrator.html';
+            return 'pages/navigation/navigation-administrator.html';
         } else {
-            return 'partials/navigation.html';
+            return 'pages/navigation/navigation.html';
         }
     };
     
@@ -290,32 +290,35 @@ controllers.controller('user', ['$scope', '$timeout', '$location', '$http', '$ro
     
 }]);
 
-controllers.controller('roles', ['$scope', '$location', '$http', 'user', 'alerts', 'ngTableParams', function($scope, $location, $http, user, alerts, ngTableParams) {
+controllers.controller('roles', ['$log', '$scope', '$location', '$http', 'user', 'alerts', 'ngTableParams', function($log, $scope, $location, $http, user, alerts, ngTableParams) {
 
     $scope.user = user;
     $scope.alerts = alerts;
     $scope.input = {};
     $scope.tableLoaded = false;
 
-    $scope.tableParams = new ngTableParams({
-        page: 1,
-        count: 10,
-        sorting: {
-            role: 'asc'
-        }
-    }, {
-        total: 0,
+//    $scope.tableParams = new ngTableParams({
+//        page: 1,
+//        count: 10,
+//        sorting: {
+//            role: 'asc'
+//        }
+//    }, {
+//        total: 0,
+$scope.roles = {
         getData: function($defer, params) {
             $http.post('api/role/table', {
                 token: $scope.user.getToken(),
                 params: JSON.stringify(params.$params)
             }).success(function(data) {
+                
                 params.total(data.total);
                 $defer.resolve(data.roles);
                 $scope.tableLoaded = true;
             });
         }
-    });
+    };
+    $log.info($scope.roles);
 
     $scope.addRole = function(role) {
         if (_.isEmpty(role)) {
@@ -432,3 +435,180 @@ controllers.controller('role', ['$scope', '$location', '$http', '$routeParams', 
     };
 
 }]);
+
+controllers.controller('congregationController', function ($scope, $http, Api, $location, popupService) {
+    $scope.page = {title: 'Congregations'};
+    $scope.congregations = Api.Congregations.query();
+    $scope.sort = function (keyname) {
+        $scope.sortKey = keyname;   //set the sortKey to the param passed
+        $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    }
+    $scope.destroy = function (congregation) {
+                if (popupService.showPopup('Really delete this congregation?')) {
+                        congregation.$remove(function (congregation) {
+                $scope.congregations.splice($scope.congregations.indexOf(congregation), 1);
+                                $location.path('/congregations');
+                        });
+                }
+        }
+});
+
+
+controllers.controller('createCongregationController', function ($scope, $http, $location, Api) {
+    $scope.page = {title: 'Add New Congregation'};
+    $scope.save = function () {
+        Api.Congregations.insert($scope.congregations, function (congregation) {
+            $location.path('/congregations/edit/' + congregation.id);
+        });
+    };
+});
+
+controllers.controller('editCongregationController', function ($routeParams, $scope, $http, $location, Api) {
+    $scope.page = {title: 'Edit Congregation'};
+
+    Api.Congregations.get({id: $routeParams.id}, function (congregations) {
+        $scope.congregations = new Api.Congregations(congregations);
+    });
+
+    $scope.isClean = function (congregations) {
+        return angular.equals(congregations, $scope.congregations);
+    };
+
+    $scope.destroy = function () {
+        $scope.congregations.destroy(function () {
+            $location.path('/congregations');
+        });
+    };
+
+    $scope.save = function () {
+        Api.Congregations.update($scope.congregations, function () {
+            $location.path('/congregations');
+        });
+    };
+});
+
+controllers.service('popupService', function ($window) {
+        this.showPopup = function (message) {
+                return $window.confirm(message);
+        }
+});
+
+controllers.controller('speakerController', function ($scope, $http, Api, $location, popupService) {
+    $scope.page = {title: 'Speakers'};
+    $scope.speakers = [];
+    $scope.speakers = Api.Speakers.query();
+    $scope.sort = function (keyname) {
+        $scope.sortKey = keyname;   //set the sortKey to the param passed
+        $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    }
+
+    $scope.destroy = function (speaker) {
+                if (popupService.showPopup('Really delete this speaker?')) {
+                        speaker.$remove(function (speaker) {
+                $scope.speakers.splice($scope.speakers.indexOf(speaker), 1);
+                                $location.path('/administrator/speakers');
+                        });
+                }
+        }
+});
+
+controllers.controller('createSpeakerController', function ($scope, $http, $location, $log, Api) {
+    $scope.page = {title: 'Add New Speaker'};
+    $scope.speaker = {};
+    $scope.congregations = Api.Congregations.query();
+    $scope.allOutlines = Api.Outlines.query({});
+    $scope.$watch('selectedOutlines', function (newValue, oldValue) {
+        var json = {};
+        var newOutlines = [];
+        angular.forEach(newValue, function (val, key) {
+            json = {outline: val.outline, speaker: ''};
+            newOutlines.push(json);
+        });
+        if (newOutlines.length == 0) {
+            json = {outline: 0, speaker: ''};
+            newOutlines.push(json);
+        }
+        $scope.selectedOutlines = newOutlines;
+    }, true);
+    $scope.$watch('selectedCongregation', function (newValue, oldValue) {
+        if(newValue){
+            $scope.speaker.congregation = newValue.id;
+        }
+    }, true);
+    
+    $scope.isClean = function (speaker) {
+        return angular.equals(speaker, $scope.speaker);
+    };
+    
+    $scope.save = function () {
+        Api.Speakers.insert($scope.speaker, function(result){
+        angular.forEach($scope.selectedOutlines, function (val, key) {
+            $scope.selectedOutlines[key].speaker = result.id;
+        });
+        Api.SpeakerOutlines.insert($scope.selectedOutlines);
+        $location.path('/administrator/speakers/edit/' + result.id);
+        });
+    };
+});
+
+controllers.controller('editSpeakerController', function ($routeParams, $scope, $location, Api, popupService, $log) {
+    $scope.page = {title: 'Edit Speakers'};
+    $scope.allOutlines = Api.Outlines.query();
+    $log.info($scope.allOutlines);
+    $scope.speaker = Api.Speakers.get({id: $routeParams.id}, function (speaker) {
+        $scope.congregations = Api.Congregations.query();
+        $scope.selectedCongregation = Api.Congregations.get({id: speaker.congregation});
+        $scope.myOutlines = Api.SpeakerOutlines.get({speaker: speaker.id}, function (myOutlines) {
+            $scope.allOutlines = Api.Outlines.query({}, function (allOutlines) {
+                
+                angular.forEach(allOutlines, function (all, key1) {
+                    angular.forEach(myOutlines, function (my, key2) {
+                        if (all.outline == my.outline) {
+                            all.ticked = true;
+                        }
+                    });
+                });
+            });
+            
+        });
+    });
+
+    $scope.$watch('selectedOutlines', function (newValue, oldValue) {
+//        $log.info('ALL', $scope.allOutlines);
+        var json = {};
+        var newOutlines = [];
+        angular.forEach(newValue, function (val, key) {
+//            $log.info('being watched oldValue:', oldValue, 'newValue:', newValue);
+            json = {speaker: $scope.speaker.id, outline: val.outline};
+            newOutlines.push(json);
+        });
+        if (newOutlines.length == 0) {
+            json = {speaker: $scope.speaker.id, outline: 0};
+            newOutlines.push(json);
+        }
+        $scope.selectedOutlines = newOutlines;
+//        $log.info(newOutlines.length);
+
+
+    }, true);
+
+    $scope.isClean = function (speaker) {
+        return angular.equals(speaker, $scope.speaker);
+    };
+
+    $scope.destroy = function (speaker) {
+            if (popupService.showPopup('Really delete this speaker?')) {
+                speaker.$remove(function () {
+                        $location.path('/administrator/speakers');
+                });
+            }
+    }
+
+    $scope.save = function () {
+        $scope.speaker.congregation = $scope.selectedCongregation.id;
+        Api.SpeakerOutlines.insert($scope.selectedOutlines);
+        Api.Speakers.update($scope.speaker);
+        $location.path('/administrator/speakers');
+    };
+
+});

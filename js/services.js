@@ -1,8 +1,8 @@
 /* global _ angular store moment */
 'use strict';
 
-angular.module('acs.services', []).
-factory('user', function($q, $http) {
+var services = angular.module('acs.services', []);
+services.factory('user', function($q, $http) {
     return {
         clear: function() {
             store.set('user', {});
@@ -45,8 +45,8 @@ factory('user', function($q, $http) {
             store.set('user', user);
         }
     };
-}).
-factory('alerts', function($interval) {
+});
+services.factory('alerts', function($interval) {
     var alerts = undefined;
     if (!window.alertsInterval) {
         window.alertsInterval = $interval(function() {
@@ -87,3 +87,36 @@ factory('alerts', function($interval) {
         }
     };
 });
+
+services.factory('Api', ['$resource', function ($resource) {
+        return {
+            Congregations: $resource(API_URL + 'congregations/:method/:id', {id: '@id'}, {
+                query: {method: 'GET', params: {}, isArray: true},
+                insert: {method: 'POST', params: {method: 'insert'}},
+                update: {method: 'POST', params: {method: 'update'}},
+                get: {method: 'GET', params: {method: 'edit'}},
+                remove: {method: 'DELETE', params: {method: 'remove'}}
+            }),
+            Speakers: $resource(API_URL + 'speakers/:method/:id', {id: '@id'}, {
+                query: {method: 'GET', params: {}, isArray: true},
+                insert: {method: 'POST', params: {method: 'insert'}},
+                update: {method: 'POST', params: {method: 'update'}},
+                get: {method: 'GET', params: {method: 'edit'}},
+                remove: {method: 'DELETE', params: {method: 'remove'}}
+            }),
+            SpeakerOutlines: $resource(API_URL + 'SpeakerOutlines/:method/:speaker', {speaker: '@speaker'}, {
+                query: {method: 'GET', params: {}, isArray: true},
+                insert: {method: 'POST', params: {method: 'insert'}},
+                update: {method: 'POST', params: {method: 'update'}},
+                get: {method: 'GET', params: {method: 'edit'}, isArray: true},
+                remove: {method: 'DELETE', params: {method: 'remove'}}
+            }),
+            Outlines: $resource(API_URL + 'outlines/:method/:id', {id: '@id'}, {
+                query: {method: 'GET', params: {}, isArray: true},
+                insert: {method: 'POST', params: {method: 'insert'}},
+                update: {method: 'POST', params: {method: 'update'}},
+                get: {method: 'GET', params: {method: 'edit'}, isArray: true},
+                remove: {method: 'DELETE', params: {method: 'remove'}}
+            })
+        };
+    }]);    

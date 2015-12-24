@@ -7,24 +7,24 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" i18n="name"></a>
+            <a class="navbar-brand" ng-href="#" i18n="name"></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav" ng-switch="user.loggedIn()">
                 <li ng-class="{ active: active('/home')}">
-                    <a href="#/home" i18n="home"></a>
+                    <a ng-href="#/home" i18n="home"></a>
                 </li>
                 <li ng-switch-when="false" ng-class="{ active: active('/login')}">
-                    <a href="#/login" i18n="login"></a>
+                    <a ng-href="#/login" i18n="login"></a>
                 </li>
                 <li ng-switch-when="false" ng-class="{ active: active('/register')}">
-                    <a href="#/register" i18n="register"></a>
+                    <a ng-href="#/register" i18n="register"></a>
                 </li>
                 <li ng-switch-when="true" ng-if="permissions.administrator.contains('read')">
-                    <a href="#/administrator" i18n="admin_panel"></a>
+                    <a ng-href="#/administrator" i18n="admin_panel"></a>
                 </li>
                 <li ng-switch-when="true">
-                    <a href ng-click="logout()" i18n="logout"></a>
+                    <a ng-href ng-click="logout()" i18n="logout"></a>
                 </li>
             </ul>
         </div>

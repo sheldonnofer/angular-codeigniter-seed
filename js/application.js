@@ -1,47 +1,88 @@
 /* global angular, i18n */
 'use strict';
 
-angular.module('acs', ['acs.filters', 'acs.services', 'acs.directives', 'acs.controllers', 'ngRoute', 'ui.bootstrap', 'ngTable']).
+var app = angular.module('acs', [
+    'acs.filters', 
+    'acs.services', 
+    'acs.directives', 
+    'acs.controllers', 
+    'ngRoute', 
+    'ui.bootstrap', 
+    'ngTable',
+    'ngResource',
+    'angularUtils.directives.dirPagination',
+    'isteven-multi-select'
+]).
 config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 
     $routeProvider.when('/home', {
         controller: 'home',
-        templateUrl: 'partials/home.html'
+        templateUrl: 'pages/home/home.html'
     });
 
     $routeProvider.when('/administrator', {
         controller: 'administrator',
-        templateUrl: 'partials/administrator.html'
+        templateUrl: 'pages/admin/administrator.html'
     });
 
     $routeProvider.when('/administrator/users', {
         controller: 'users',
-        templateUrl: 'partials/users.html'
+        templateUrl: 'pages/auth/users.html'
     });
 
     $routeProvider.when('/administrator/user/:id', {
         controller: 'user',
-        templateUrl: 'partials/user.html'
+        templateUrl: 'pages/auth/user.html'
     });
 
     $routeProvider.when('/administrator/roles', {
         controller: 'roles',
-        templateUrl: 'partials/roles.html'
+        templateUrl: 'pages/auth/roles.html'
     });
                 
     $routeProvider.when('/administrator/role/:role', {
         controller: 'role',
-        templateUrl: 'partials/role.html'
+        templateUrl: 'pages/auth/role.html'
     });
 
     $routeProvider.when('/login', {
         controller: 'login',
-        templateUrl: 'partials/login.html'
+        templateUrl: 'pages/auth/login.html'
     });
 
     $routeProvider.when('/register', {
         controller: 'register',
-        templateUrl: 'partials/register.html'
+        templateUrl: 'pages/auth/register.html'
+    });
+
+    $routeProvider.when('/administrator/congregations', {
+        controller: 'congregationController',
+        templateUrl: 'pages/congregations/browse.html'
+    });
+
+    $routeProvider.when('/administrator/congregations/edit/:id', {
+        controller: 'editCongregationController',
+        templateUrl: 'pages/congregations/edit.html'
+    });
+
+    $routeProvider.when('/administrator/congregations/new', {
+        controller: 'createCongregationController',
+        templateUrl: 'pages/congregations/create.html'
+    });
+    
+    $routeProvider.when('/administrator/speakers', {
+        controller: 'speakerController',
+        templateUrl: 'pages/speakers/browse.html'
+    });
+
+    $routeProvider.when('/administrator/speakers/edit/:id', {
+        controller: 'editSpeakerController',
+        templateUrl: 'pages/speakers/edit.html'
+    });
+
+    $routeProvider.when('/administrator/speakers/new', {
+        controller: 'createSpeakerController',
+        templateUrl: 'pages/speakers/create.html'
     });
 
     $routeProvider.otherwise({

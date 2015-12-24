@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class REST_Controller extends CI_Controller {
+class JWT_Controller extends CI_Controller {
 
 	function __construct()
 	{

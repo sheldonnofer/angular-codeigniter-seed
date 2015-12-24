@@ -1,0 +1,48 @@
+<h1 class="page-header">{{page.title}}</h1>
+<form class="form-inline">
+    <div class="form-group">
+        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+    </div>
+</form>
+<table class="table table-bordered" show-filter="true">
+    <thead>
+        <tr>
+            <th ng-click="sort('name')">Name
+                <span class="glyphicon sort-icon" ng-show="sortKey == 'name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+            <th ng-click="sort('coordinator_phone')">PTC Phone
+                <span class="glyphicon sort-icon" ng-show="sortKey == 'coordinator_phone'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+            <th ng-click="sort('coordinator_email')">PTC Email
+                <span class="glyphicon sort-icon" ng-show="sortKey == 'coordinator_email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+            <th ng-click="sort('address')">Address
+                <span class="glyphicon sort-icon" ng-show="sortKey == 'address'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+            <th ng-click="sort('meeting_time')">Meeting Time
+                <span class="glyphicon sort-icon" ng-show="sortKey == 'meeting_time'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+            <th ng-click="sort('circuit')">Circuit
+                <span class="glyphicon sort-icon" ng-show="sortKey == 'circuit'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+            <th><a class="btn btn-success btn-small pull-right" href="#/congregations/new"><i class="icon-plus icon-white"></i> Add project</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr dir-paginate="congregation in congregations|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+            <td>{{congregation.name}}</td>
+            <td>{{congregation.coordinator_phone}}</td>
+            <td>{{congregation.coordinator_email}}</td>
+            <td>{{congregation.address}}</td>
+            <td>{{congregation.meeting_time}}</td>
+            <td>{{congregation.circuit}}</td>
+            <td>
+                <div class="pull-right">
+                    <a class="btn btn-primary btn-mini" href="#/congregations/edit/{{congregation.id}}"><i class="icon-edit icon-white"></i> Edit</a>
+                    <button ng-click="destroy(congregation)" class="btn btn-danger btn-mini"><i class="icon-trash icon-white"></i> Delete</button> 
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<dir-pagination-controls
+    max-size="200"
+    direction-links="true"
+    boundary-links="true" 
+    auto-hide="false" >
+</dir-pagination-controls>
+
