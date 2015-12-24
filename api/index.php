@@ -280,7 +280,7 @@ switch (ENVIRONMENT)
 		$view_folder = rtrim($view_folder, '/\\').DIRECTORY_SEPARATOR;
 	}
 
-	define('VIEWPATH', $view_folder);
+	define('APPPATH', $view_folder);
 
 /*
  * --------------------------------------------------------------------
