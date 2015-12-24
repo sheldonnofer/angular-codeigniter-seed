@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Role extends REST_Controller {
+require(APPPATH.'libraries/JWT_Controller.php');
+
+class Role extends JWT_Controller {
 
 }
 
